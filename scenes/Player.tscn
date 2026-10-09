@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://bdymwbsij44iv" path="res://assets/Knight_1/Idle.png" id="2_qu4a1"]
 [ext_resource type="Texture2D" uid="uid://hju6g57ghoqb" path="res://assets/Knight_1/Run.png" id="3_70d11"]
 [ext_resource type="Texture2D" uid="uid://fyku2ikq8sgo" path="res://assets/Knight_1/Walk.png" id="4_cw2d6"]
+[ext_resource type="Script" uid="uid://12v3fnqip0nx" path="res://scripts/States/StateMachine.gd" id="6_70d11"]
+[ext_resource type="Script" uid="uid://c34xs70ko4rct" path="res://scripts/States/Idle.gd" id="7_cw2d6"]
+[ext_resource type="Script" uid="uid://caqmyltd6dcxp" path="res://scripts/States/Run.gd" id="8_khinc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_khinc"]
 atlas = ExtResource("1_mdl7e")
@@ -260,3 +263,17 @@ autoplay = "Idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1081645061]
 position = Vector2(0, -33)
 shape = SubResource("RectangleShape2D_fs6e8")
+
+[node name="StateMachine" type="Node" parent="." unique_id=2018593240 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("6_70d11")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=488747527]
+script = ExtResource("7_cw2d6")
+
+[node name="Run" type="Node" parent="StateMachine" unique_id=1263203805]
+script = ExtResource("8_khinc")
+
+[node name="Jump" type="Node" parent="StateMachine" unique_id=1121010396]
+
+[node name="Fall" type="Node" parent="StateMachine" unique_id=839256700]

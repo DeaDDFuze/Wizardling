@@ -1,7 +1,5 @@
-
+class_name WizardlingPlayer
 extends CharacterBody2D
-
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 # Déplacements
 const WALK_SPEED = 250.0
@@ -13,58 +11,51 @@ const GRAVITY_MULTIPLIER = 1.0
 const FALL_GRAVITY_MULTIPLIER = 1.5
 const JUMP_RELEASE_MULTIPLIER = 4.0
 
-var speed = WALK_SPEED
+var speed: float = WALK_SPEED
 
 
-func _physics_process(delta: float) -> void:
-	# Gestion du saut
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+# Lecture de la direction
+func get_direction() -> float:
+	return Input.get_axis("move_left", "move_right")
 
-	# Gestion de la gravité
-	if not is_on_floor():
-		var gravity = get_gravity().y
 
-		if velocity.y < 0:
-			# Le personnage monte
-			if Input.is_action_pressed("jump"):
-				velocity.y += gravity * GRAVITY_MULTIPLIER * delta
-			else:
-				# Saut relâché : freinage vertical rapide
-				velocity.y += gravity * JUMP_RELEASE_MULTIPLIER * delta
-		else:
-			# Le personnage descend
-			velocity.y += gravity * FALL_GRAVITY_MULTIPLIER * delta
+# Gestion du mouvement horizontal
+func apply_horizontal_movement() -> void:
+	var direction := get_direction()
 
-	# Déplacement horizontal
-	var direction := Input.get_axis("move_left", "move_right")
-	var is_sprinting := Input.is_action_pressed("dash")
-
-	if is_sprinting:
+	if Input.is_action_pressed("dash"):
 		speed = SPRINT_SPEED
 	else:
 		speed = WALK_SPEED
 
-	if direction:
+	if direction != 0.0:
 		velocity.x = direction * speed
-
-		if direction < 0:
-			animated_sprite.flip_h = true
-		else:
-			animated_sprite.flip_h = false
 	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.x = move_toward(velocity.x, 0.0, speed)
 
-	move_and_slide()
 
-	# Animations : priorité au saut
-	if not is_on_floor():
-		if animated_sprite.animation != "Jumping":
-			animated_sprite.play("Jumping")
-	elif direction != 0:
-		if is_sprinting:
-			animated_sprite.play("Running")
+# Gestion de la gravité
+func apply_gravity(delta: float) -> void:
+	if is_on_floor():
+		return
+
+	var gravity := get_gravity().y
+
+	if velocity.y < 0.0:
+		if Input.is_action_pressed("jump"):
+			velocity.y += gravity * GRAVITY_MULTIPLIER * delta
 		else:
-			animated_sprite.play("Walking")
+			velocity.y += gravity * JUMP_RELEASE_MULTIPLIER * delta
 	else:
-		animated_sprite.play("Idle")
+		velocity.y += gravity * FALL_GRAVITY_MULTIPLIER * delta
+
+
+# Oriente le personnage
+func update_facing() -> void:
+	var direction := get_direction()
+	var sprite := $AnimatedSprite2D as AnimatedSprite2D
+
+	if direction < 0.0:
+		sprite.flip_h = true
+	elif direction > 0.0:
+		sprite.flip_h = false

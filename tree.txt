@@ -1,0 +1,109 @@
+.
+├── README.md
+├── assets
+│   ├── Knight_1
+│   │   ├── Attack 1.png
+│   │   ├── Attack 1.png.import
+│   │   ├── Attack 2.png
+│   │   ├── Attack 2.png.import
+│   │   ├── Attack 3.png
+│   │   ├── Attack 3.png.import
+│   │   ├── Dead.png
+│   │   ├── Dead.png.import
+│   │   ├── Defend.png
+│   │   ├── Defend.png.import
+│   │   ├── Hurt.png
+│   │   ├── Hurt.png.import
+│   │   ├── Idle.png
+│   │   ├── Idle.png.import
+│   │   ├── Jump.png
+│   │   ├── Jump.png.import
+│   │   ├── Protect.png
+│   │   ├── Protect.png.import
+│   │   ├── Run+Attack.png
+│   │   ├── Run+Attack.png.import
+│   │   ├── Run.png
+│   │   ├── Run.png.import
+│   │   ├── Walk.png
+│   │   └── Walk.png.import
+│   └── Tileset
+│       ├── Background
+│       │   ├── 1920x1080
+│       │   │   ├── Clouds_1920x1080.png
+│       │   │   ├── Clouds_1920x1080.png.import
+│       │   │   ├── Flora1_1920x1080.png
+│       │   │   ├── Flora1_1920x1080.png.import
+│       │   │   ├── Flora2_1920x1080.png
+│       │   │   ├── Flora2_1920x1080.png.import
+│       │   │   ├── Full_bg_1920x1080.png
+│       │   │   ├── Full_bg_1920x1080.png.import
+│       │   │   ├── Sky_1920x1080.png
+│       │   │   ├── Sky_1920x1080.png.import
+│       │   │   └── ├À2
+│       │   │       ├── Clouds_1920x1080├À2.png
+│       │   │       ├── Clouds_1920x1080├À2.png.import
+│       │   │       ├── Flora1_1920x1080├À2.png
+│       │   │       ├── Flora1_1920x1080├À2.png.import
+│       │   │       ├── Flora2_1920x1080├À2.png
+│       │   │       ├── Flora2_1920x1080├À2.png.import
+│       │   │       ├── Full_bg_1920x1080├À2.png
+│       │   │       ├── Full_bg_1920x1080├À2.png.import
+│       │   │       ├── Sky_1920x1080├À2.png
+│       │   │       └── Sky_1920x1080├À2.png.import
+│       │   └── x32
+│       │       ├── Clouds_x32.png
+│       │       ├── Clouds_x32.png.import
+│       │       ├── Flora1x32.png
+│       │       ├── Flora1x32.png.import
+│       │       ├── Flora2x32.png
+│       │       ├── Flora2x32.png.import
+│       │       ├── Full_bgx32.png
+│       │       ├── Full_bgx32.png.import
+│       │       ├── Skyx32.png
+│       │       └── Skyx32.png.import
+│       ├── Clouds_in_tiles.png
+│       ├── Clouds_in_tiles.png.import
+│       ├── Details.png
+│       ├── Details.png.import
+│       ├── Fairys.png
+│       ├── Fairys.png.import
+│       ├── Flying_stone.png
+│       ├── Flying_stone.png.import
+│       ├── Objects.png
+│       ├── Objects.png.import
+│       ├── Predator_plant.png
+│       ├── Predator_plant.png.import
+│       ├── Spikes.png
+│       ├── Spikes.png.import
+│       ├── Tileset.png
+│       ├── Tileset.png.import
+│       ├── cave_entrance.png
+│       ├── cave_entrance.png.import
+│       ├── chest.png
+│       ├── chest.png.import
+│       ├── key.png
+│       ├── key.png.import
+│       ├── shinies.png
+│       ├── shinies.png.import
+│       ├── stalactites.png
+│       └── stalactites.png.import
+├── icon.svg
+├── icon.svg.import
+├── project.godot
+├── scenes
+│   ├── Player.tscn
+│   ├── killzone.tscn
+│   └── world.tscn
+├── scripts
+│   ├── Player.gd
+│   ├── Player.gd.uid
+│   ├── States
+│   │   ├── State.gd
+│   │   └── State.gd.uid
+│   ├── backgroundcrawler.gd
+│   ├── backgroundcrawler.gd.uid
+│   ├── killzone.gd
+│   └── killzone.gd.uid
+└── tree.txt
+
+11 directories, 96 files
