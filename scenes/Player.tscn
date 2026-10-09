@@ -8,6 +8,8 @@
 [ext_resource type="Script" uid="uid://12v3fnqip0nx" path="res://scripts/States/StateMachine.gd" id="6_70d11"]
 [ext_resource type="Script" uid="uid://c34xs70ko4rct" path="res://scripts/States/Idle.gd" id="7_cw2d6"]
 [ext_resource type="Script" uid="uid://caqmyltd6dcxp" path="res://scripts/States/Run.gd" id="8_khinc"]
+[ext_resource type="Script" uid="uid://d4jsoe6ln32co" path="res://scripts/States/Jump.gd" id="9_6eyey"]
+[ext_resource type="Script" uid="uid://b1lt7d5xrd4xf" path="res://scripts/States/Fall.gd" id="10_d3wef"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_khinc"]
 atlas = ExtResource("1_mdl7e")
@@ -275,5 +277,7 @@ script = ExtResource("7_cw2d6")
 script = ExtResource("8_khinc")
 
 [node name="Jump" type="Node" parent="StateMachine" unique_id=1121010396]
+script = ExtResource("9_6eyey")
 
 [node name="Fall" type="Node" parent="StateMachine" unique_id=839256700]
+script = ExtResource("10_d3wef")
