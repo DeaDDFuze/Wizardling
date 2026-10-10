@@ -2,16 +2,17 @@ class_name WizardlingPlayer
 extends CharacterBody2D
 
 # Déplacements
-const WALK_SPEED = 250.0
-const SPRINT_SPEED = 500.0
+const MOVE_SPEED = 375.0
+const DASH_SPEED = 800.0
+const DASH_DURATION = 0.18
+
+var speed:float = MOVE_SPEED
 
 # Saut
 const JUMP_VELOCITY = -500.0
 const GRAVITY_MULTIPLIER = 1.0
 const FALL_GRAVITY_MULTIPLIER = 1.5
 const JUMP_RELEASE_MULTIPLIER = 4.0
-
-var speed: float = WALK_SPEED
 
 
 # Lecture de la direction
@@ -24,9 +25,9 @@ func apply_horizontal_movement() -> void:
 	var direction := get_direction()
 
 	if Input.is_action_pressed("dash"):
-		speed = SPRINT_SPEED
+		speed = DASH_SPEED
 	else:
-		speed = WALK_SPEED
+		speed = MOVE_SPEED
 
 	if direction != 0.0:
 		velocity.x = direction * speed
