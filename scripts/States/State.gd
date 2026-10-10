@@ -14,5 +14,13 @@ func enter() -> void:
 func exit() -> void:
 	pass
 	
+
+func check_dash() -> bool:
+	if Input.is_action_just_pressed("dash") and player.can_dash():
+		transition_requested.emit("Dash")
+		return true
+	return false
+
+	
 func physics_update(_delta: float) -> void:
 	pass

@@ -19,18 +19,26 @@ func _ready() -> void:
 		current_state.enter()
 
 
-func _physics_process(delta: float) -> void:
-	if current_state == null:
-		return
 
-	# Physique commune à tous les états
+func _physics_process(delta: float) -> void:
+	
 	player.apply_gravity(delta)
 	player.apply_horizontal_movement()
 	player.update_facing()
+
+	if current_state == null:
+		return
+
+	# Mise à jour de l'état actif
+	current_state.physics_update(delta)
+
+	# Déplacement physique
 	player.move_and_slide()
 
-	# Logique de l'état actuellement actif
-	current_state.physics_update(delta)
+	# Recharge du Dash aérien au contact du sol
+	if player.is_on_floor():
+		player.air_dash_available = true
+
 
 
 func change_state(new_state: String) -> void:

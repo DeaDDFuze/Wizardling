@@ -9,6 +9,8 @@ func enter() -> void:
 
 
 func physics_update(_delta: float) -> void:
+	if check_dash():
+		return
 	# Le personnage atteint le sommet du saut
 	if player.velocity.y >= 0.0:
 		transition_requested.emit("Fall")

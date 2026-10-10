@@ -8,6 +8,8 @@ func enter() -> void:
 
 
 func physics_update(_delta: float) -> void:
+	if check_dash():
+		return
 	if not player.is_on_floor():
 		transition_requested.emit("Fall")
 		return
@@ -24,7 +26,4 @@ func physics_update(_delta: float) -> void:
 
 
 func update_animation() -> void:
-	if Input.is_action_pressed("dash"):
 		animated_sprite.play("Running")
-	else:
-		animated_sprite.play("Walking")

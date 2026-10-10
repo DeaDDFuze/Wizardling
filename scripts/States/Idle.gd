@@ -2,10 +2,13 @@ extends State
 
 func enter() -> void:
 	animated_sprite.play("Idle")
-	print("Etat : IDLE")
 
 
 func physics_update(_delta: float) -> void:
+	
+	if check_dash():
+		return
+	
 	if not player.is_on_floor():
 		transition_requested.emit("Fall")
 		return
