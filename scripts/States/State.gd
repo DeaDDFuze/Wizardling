@@ -20,6 +20,15 @@ func check_dash() -> bool:
 		transition_requested.emit("Dash")
 		return true
 	return false
+	
+
+func check_attack() -> bool:
+	if Input.is_action_just_pressed("Attack"):
+		transition_requested.emit("Attack")
+		return true
+
+	return false
+
 
 	
 func physics_update(_delta: float) -> void:

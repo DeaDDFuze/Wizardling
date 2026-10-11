@@ -15,6 +15,8 @@ func physics_update(_delta: float) -> void:
 	
 	if check_dash():
 		return
+	if check_attack():
+		return
 	if not player.is_on_floor():
 		transition_requested.emit("Fall")
 		return
