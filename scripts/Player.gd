@@ -11,6 +11,7 @@ const JUMP_VELOCITY = -500.0
 const GRAVITY_MULTIPLIER = 1.0
 const FALL_GRAVITY_MULTIPLIER = 1.5
 const JUMP_RELEASE_MULTIPLIER = 4.0
+const POGO_VELOCITY = -420.0
 
 
 
@@ -77,3 +78,5 @@ func update_facing() -> void:
 		facing_direction = 1
 		
 	sprite.flip_h = facing_direction < 0
+	
+	$Hitboxes/Horizontal.position.x = 38.0 * facing_direction

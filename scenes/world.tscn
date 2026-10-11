@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bwkuxwrs1hn5e" path="res://scenes/killzone.tscn" id="3_4wyf3"]
 [ext_resource type="Texture2D" uid="uid://bu02m3scvyq5a" path="res://assets/Tileset/Background/1920x1080/Full_bg_1920x1080.png" id="4_71j4m"]
 [ext_resource type="Script" uid="uid://bn07fgk15mijo" path="res://scripts/backgroundcrawler.gd" id="5_qfnet"]
+[ext_resource type="Texture2D" uid="uid://wtxj8a0w0e7o" path="res://scripts/Combat/6a132615-ea21-40ef-8fc1-437d32e97920.png" id="6_i7141"]
+[ext_resource type="Script" uid="uid://bdqmp7c1drjtu" path="res://scripts/Combat/Hurtbox.gd" id="6_qfnet"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
 texture = ExtResource("2_rwgxs")
@@ -355,6 +357,9 @@ distance = -485.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fs6e8"]
 size = Vector2(134, 28)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mrxx"]
+size = Vector2(34, 62)
+
 [node name="World" type="Node2D" unique_id=852045070]
 
 [node name="Player" parent="." unique_id=855193938 instance=ExtResource("1_nnsk1")]
@@ -414,3 +419,21 @@ debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
 position = Vector2(1696, 103)
 shape = SubResource("RectangleShape2D_fs6e8")
 debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+
+[node name="TrainingDummy" type="Node2D" parent="." unique_id=1339398798]
+position = Vector2(3112, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="TrainingDummy" unique_id=620087536]
+position = Vector2(-7.6293945e-06, -25.000006)
+scale = Vector2(0.075757496, 0.075757496)
+texture = ExtResource("6_i7141")
+
+[node name="Hurtbox" type="Area2D" parent="TrainingDummy" unique_id=984655049]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("6_qfnet")
+metadata/_custom_type_script = "uid://bdqmp7c1drjtu"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TrainingDummy/Hurtbox" unique_id=1405511653]
+position = Vector2(0, -21)
+shape = SubResource("RectangleShape2D_4mrxx")
