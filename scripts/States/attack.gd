@@ -49,6 +49,7 @@ func disable_hitboxes() -> void:
 
 
 func enter() -> void:
+
 	# Déterminer la direction de l'attaque
 	if Input.is_action_pressed("up"):
 		attack_direction = AttackDirection.UP
@@ -82,12 +83,20 @@ func enter() -> void:
 	print("ATTACK : ", AttackDirection.keys()[attack_direction])
 
 
+
+	
+
 func physics_update(delta: float) -> void:
-	# Conserver la gravité pendant les attaques
+	# Conserver la gravité et la trajectoire verticale
 	player.apply_gravity(delta)
 
-	# L'inertie horizontale est conservée,
-	# mais aucune nouvelle accélération n'est appliquée.
+	# Lecture des commandes en temps réel
+	var direction := player.get_direction()
+
+	# Déplacement immédiat, sans inertie
+	player.velocity.x = direction * WizardlingPlayer.MOVE_SPEED
+
+
 
 
 func exit() -> void:
