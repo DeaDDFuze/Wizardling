@@ -8,7 +8,7 @@ var dash_direction: int = 1
 func enter() -> void:
 	dash_timer = WizardlingPlayer.DASH_DURATION
 	
-	animated_sprite.play("")
+	animated_sprite.play("Dashing")
 
 	# Récupérer la direction mémorisée
 	dash_direction = player.facing_direction

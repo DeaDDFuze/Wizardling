@@ -11,6 +11,31 @@
 [ext_resource type="Script" uid="uid://d4jsoe6ln32co" path="res://scripts/States/Jump.gd" id="9_6eyey"]
 [ext_resource type="Script" uid="uid://b1lt7d5xrd4xf" path="res://scripts/States/Fall.gd" id="10_d3wef"]
 [ext_resource type="Script" uid="uid://be3savs5jt4ef" path="res://scripts/States/dash.gd" id="11_d3wef"]
+[ext_resource type="Script" uid="uid://clrdiv2l8117" path="res://scripts/aura.gd" id="12_o4126"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qrixf"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(0, 0, 66, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qmt83"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(132, 0, 66, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4as6"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(264, 0, 66, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1r6t"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(396, 0, 66, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0asu"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(528, 0, 66, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq1a3"]
+atlas = ExtResource("1_mdl7e")
+region = Rect2(660, 0, 66, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_khinc"]
 atlas = ExtResource("1_mdl7e")
@@ -131,6 +156,29 @@ region = Rect2(896, 0, 64, 128)
 [sub_resource type="SpriteFrames" id="SpriteFrames_0548b"]
 animations = [{
 "frames": [{
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_qrixf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qmt83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4as6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b1r6t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0asu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fq1a3")
+}],
+"loop": 0,
+"name": &"Dashing",
+"speed": 25.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_khinc")
 }, {
@@ -248,8 +296,20 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fs6e8"]
-size = Vector2(32, 64)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_71j4m"]
+radius = 18.0
+height = 60.0
+
+[sub_resource type="Gradient" id="Gradient_lkdrv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fs6e8"]
+gradient = SubResource("Gradient_lkdrv")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=1949454007]
 z_index = 5
@@ -260,12 +320,12 @@ script = ExtResource("1_qu4a1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1179266617]
 position = Vector2(0, -65)
 sprite_frames = SubResource("SpriteFrames_0548b")
-animation = &"Jumping"
+animation = &"Dashing"
 autoplay = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1081645061]
-position = Vector2(0, -33)
-shape = SubResource("RectangleShape2D_fs6e8")
+position = Vector2(0, -30)
+shape = SubResource("CapsuleShape2D_71j4m")
 
 [node name="StateMachine" type="Node" parent="." unique_id=2018593240 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("6_70d11")
@@ -288,4 +348,12 @@ script = ExtResource("11_d3wef")
 
 [node name="DashCooldown" type="Timer" parent="." unique_id=1233743101]
 process_callback = 0
+wait_time = 0.65
 one_shot = true
+
+[node name="Aura" type="PointLight2D" parent="." unique_id=1848591566]
+position = Vector2(0, -33)
+color = Color(0.03137255, 0.8117647, 1, 1)
+energy = 0.45
+texture = SubResource("GradientTexture2D_fs6e8")
+script = ExtResource("12_o4126")

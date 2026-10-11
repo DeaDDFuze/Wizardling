@@ -20,25 +20,20 @@ func _ready() -> void:
 
 
 
-func _physics_process(delta: float) -> void:
-	
-	player.apply_gravity(delta)
-	player.apply_horizontal_movement()
-	player.update_facing()
 
+func _physics_process(delta: float) -> void:
 	if current_state == null:
 		return
 
-	# Mise à jour de l'état actif
+	# Chaque état contrôle sa propre physique
 	current_state.physics_update(delta)
 
-	# Déplacement physique
+	# Déplacement et collisions
 	player.move_and_slide()
 
-	# Recharge du Dash aérien au contact du sol
+	# Recharger le Dash aérien à l'atterrissage
 	if player.is_on_floor():
 		player.air_dash_available = true
-
 
 
 func change_state(new_state: String) -> void:
