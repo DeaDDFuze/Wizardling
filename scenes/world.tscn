@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bdqmp7c1drjtu" path="res://scripts/Combat/Hurtbox.gd" id="6_qfnet"]
 [ext_resource type="Texture2D" uid="uid://bndxvuldqnckm" path="res://assets/Keys.png" id="8_4mrxx"]
 [ext_resource type="Texture2D" uid="uid://m8ksrb1743fc" path="res://assets/Keys_shift.png" id="8_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://cjv1rbkobb87b" path="res://scenes/damage_zone.tscn" id="11_e3hyu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
 texture = ExtResource("2_rwgxs")
@@ -545,3 +546,6 @@ offset_right = 3151.0
 offset_bottom = -152.0
 text = "+
 "
+
+[node name="DamageZone" parent="." unique_id=1397862826 instance=ExtResource("11_e3hyu")]
+position = Vector2(1986, -80)

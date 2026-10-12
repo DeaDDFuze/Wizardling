@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://12v3fnqip0nx" path="res://scripts/States/StateMachine.gd" id="6_70d11"]
 [ext_resource type="Texture2D" uid="uid://b8openggs3kc5" path="res://assets/Knight_1/Knight-Death.png" id="6_sfy4j"]
 [ext_resource type="Script" uid="uid://c34xs70ko4rct" path="res://scripts/States/Idle.gd" id="7_cw2d6"]
+[ext_resource type="Texture2D" uid="uid://d1105fft6stob" path="res://assets/Knight_1/Knight-Hurt.png" id="8_gv3ic"]
 [ext_resource type="Script" uid="uid://caqmyltd6dcxp" path="res://scripts/States/Run.gd" id="8_khinc"]
 [ext_resource type="Script" uid="uid://d4jsoe6ln32co" path="res://scripts/States/Jump.gd" id="9_6eyey"]
 [ext_resource type="Script" uid="uid://bdqmp7c1drjtu" path="res://scripts/Combat/Hurtbox.gd" id="10_61ith"]
@@ -20,6 +21,8 @@
 [ext_resource type="Script" uid="uid://clrdiv2l8117" path="res://scripts/aura.gd" id="12_o4126"]
 [ext_resource type="Script" uid="uid://b68ntsv3jy5qt" path="res://scripts/States/attack.gd" id="16_jfpux"]
 [ext_resource type="Script" uid="uid://de2afhmhwjkai" path="res://scripts/Combat/Hitbox.gd" id="19_ebwui"]
+[ext_resource type="Script" uid="uid://cr3ckrjcl6dkc" path="res://scripts/States/hurt.gd" id="20_b8lor"]
+[ext_resource type="Script" uid="uid://rdbj227jn3ao" path="res://scripts/States/death.gd" id="21_6e537"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qrixf"]
 atlas = ExtResource("2_srp4u")
@@ -136,6 +139,26 @@ region = Rect2(384, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_d3wef"]
 atlas = ExtResource("1_mdl7e")
 region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yj0e"]
+atlas = ExtResource("8_gv3ic")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0jld"]
+atlas = ExtResource("8_gv3ic")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdclj"]
+atlas = ExtResource("8_gv3ic")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ml80s"]
+atlas = ExtResource("8_gv3ic")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdgyb"]
+atlas = ExtResource("8_gv3ic")
+region = Rect2(512, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qu4a1"]
 atlas = ExtResource("2_qu4a1")
@@ -358,6 +381,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_7yj0e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0jld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdclj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ml80s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdgyb")
+}],
+"loop": 0,
+"name": &"Hurt",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_qu4a1")
 }, {
 "duration": 1.0,
@@ -493,9 +536,9 @@ script = ExtResource("1_qu4a1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1179266617]
 position = Vector2(0, -65)
 sprite_frames = SubResource("SpriteFrames_0548b")
-animation = &"Death"
+animation = &"Hurt"
 autoplay = "Idle"
-frame = 5
+frame = 4
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1081645061]
@@ -533,6 +576,16 @@ script = ExtResource("11_d3wef")
 
 [node name="Attack" type="Node" parent="StateMachine" unique_id=1545262850]
 script = ExtResource("16_jfpux")
+
+[node name="Hurt" type="Node" parent="StateMachine" unique_id=1402174829]
+script = ExtResource("20_b8lor")
+
+[node name="Timer" type="Timer" parent="StateMachine/Hurt" unique_id=972638393]
+wait_time = 0.3
+one_shot = true
+
+[node name="Death" type="Node" parent="StateMachine" unique_id=926685954]
+script = ExtResource("21_6e537")
 
 [node name="DashCooldown" type="Timer" parent="." unique_id=1233743101]
 process_callback = 0
@@ -574,3 +627,8 @@ script = ExtResource("19_ebwui")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitboxes/Down" unique_id=2107141051]
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_jfpux")
+
+[node name="InvulnerabilityTimer" type="Timer" parent="." unique_id=506002627]
+process_callback = 0
+wait_time = 0.75
+one_shot = true

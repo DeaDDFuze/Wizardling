@@ -37,7 +37,16 @@ func _physics_process(delta: float) -> void:
 		player.air_dash_available = true
 
 
+
 func change_state(new_state: String) -> void:
+	# Une fois dans Death, aucune autre transition
+	if current_state != null and current_state.name == "Death":
+		return
+
+	# Après un décès, seul Death est autorisé
+	if player.is_dead and new_state != "Death":
+		return
+
 	var next_state := get_node_or_null(new_state) as State
 
 	if next_state == null:

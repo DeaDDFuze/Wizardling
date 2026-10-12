@@ -1,6 +1,21 @@
 class_name WizardlingPlayer
 extends CharacterBody2D
 
+
+signal health_changed(current: int, maximum: int)
+signal died
+
+@export_range(1, 20) var max_health: int = 3
+
+var health: int = 3
+var is_dead: bool = false
+var is_invulnerable: bool = false
+
+@onready var state_machine: StateMachine = $StateMachine
+@onready var hurtbox: Hurtbox = $Hurtbox
+@onready var invulnerability_timer: Timer = $InvulnerabilityTimer
+
+
 # Déplacements
 const MOVE_SPEED = 375.0
 const DASH_SPEED = 1200.0
@@ -81,3 +96,57 @@ func update_facing() -> void:
 	sprite.flip_h = facing_direction < 0
 	
 	$Hitboxes/Horizontal.position.x = 38.0 * facing_direction
+	
+
+func _ready() -> void:
+	health = max_health
+
+	hurtbox.hit_received.connect(on_hurtbox_hit)
+	invulnerability_timer.timeout.connect(
+		end_invulnerability
+	)
+
+	health_changed.emit(health, max_health)
+
+
+func on_hurtbox_hit() -> void:
+	take_damage(1)
+
+
+func take_damage(amount: int) -> void:
+	if is_dead or is_invulnerable:
+		return
+
+	if amount <= 0:
+		return
+
+	health = maxi(health - amount, 0)
+	health_changed.emit(health, max_health)
+
+	print("PV : ", health, "/", max_health)
+
+	if health == 0:
+		die()
+		return
+
+	is_invulnerable = true
+	invulnerability_timer.start()
+	state_machine.change_state("Hurt")
+
+
+func end_invulnerability() -> void:
+	is_invulnerable = false
+
+
+func die() -> void:
+	if is_dead:
+		return
+
+	is_dead = true
+	health = 0
+	velocity = Vector2.ZERO
+
+	health_changed.emit(health, max_health)
+	died.emit()
+
+	state_machine.change_state("Death")
