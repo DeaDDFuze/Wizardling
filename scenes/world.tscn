@@ -1,12 +1,15 @@
-[gd_scene format=3 uid="uid://cxwu0ftulplkj"]
+[gd_scene format=4 uid="uid://cxwu0ftulplkj"]
 
 [ext_resource type="PackedScene" uid="uid://bw5flp2yvcyy1" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="Texture2D" uid="uid://qcn2negrg5rb" path="res://assets/Tileset/Tileset.png" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://ctchkj7qf43x0" path="res://scripts/camera_shake.gd" id="2_w7kh3"]
 [ext_resource type="PackedScene" uid="uid://bwkuxwrs1hn5e" path="res://scenes/killzone.tscn" id="3_4wyf3"]
 [ext_resource type="Texture2D" uid="uid://bu02m3scvyq5a" path="res://assets/Tileset/Background/1920x1080/Full_bg_1920x1080.png" id="4_71j4m"]
 [ext_resource type="Script" uid="uid://bn07fgk15mijo" path="res://scripts/backgroundcrawler.gd" id="5_qfnet"]
 [ext_resource type="Texture2D" uid="uid://wtxj8a0w0e7o" path="res://scripts/Combat/6a132615-ea21-40ef-8fc1-437d32e97920.png" id="6_i7141"]
 [ext_resource type="Script" uid="uid://bdqmp7c1drjtu" path="res://scripts/Combat/Hurtbox.gd" id="6_qfnet"]
+[ext_resource type="Texture2D" uid="uid://bndxvuldqnckm" path="res://assets/Keys.png" id="8_4mrxx"]
+[ext_resource type="Texture2D" uid="uid://m8ksrb1743fc" path="res://assets/Keys_shift.png" id="8_7r4gi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
 texture = ExtResource("2_rwgxs")
@@ -360,6 +363,31 @@ size = Vector2(134, 28)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mrxx"]
 size = Vector2(34, 62)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7kh3"]
+texture = ExtResource("8_7r4gi")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_en8nn"]
+sources/1 = SubResource("TileSetAtlasSource_w7kh3")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7r4gi"]
+texture = ExtResource("8_4mrxx")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_0548b"]
+tile_size = Vector2i(12, 12)
+sources/1 = SubResource("TileSetAtlasSource_7r4gi")
+
 [node name="World" type="Node2D" unique_id=852045070]
 
 [node name="Player" parent="." unique_id=855193938 instance=ExtResource("1_nnsk1")]
@@ -370,6 +398,9 @@ zoom = Vector2(2, 2)
 limit_left = -90
 limit_bottom = 256
 position_smoothing_enabled = true
+script = ExtResource("2_w7kh3")
+shake_strength = 15.0
+shake_duration = 0.5
 
 [node name="TileMap" type="TileMap" parent="." unique_id=403152810]
 tile_set = SubResource("TileSet_fs6e8")
@@ -420,6 +451,35 @@ position = Vector2(1696, 103)
 shape = SubResource("RectangleShape2D_fs6e8")
 debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
 
+[node name="Node2D" type="Node2D" parent="Pièges/Pics" unique_id=1378409680]
+position = Vector2(1, -13)
+
+[node name="Hurtbox" type="Area2D" parent="Pièges/Pics/Node2D" unique_id=169738908]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("6_qfnet")
+metadata/_custom_type_script = "uid://bdqmp7c1drjtu"
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Pièges/Pics/Node2D/Hurtbox" unique_id=79252570]
+position = Vector2(864, 103)
+shape = SubResource("RectangleShape2D_fs6e8")
+debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Pièges/Pics/Node2D/Hurtbox" unique_id=1073428615]
+position = Vector2(1055, 103)
+shape = SubResource("RectangleShape2D_fs6e8")
+debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Pièges/Pics/Node2D/Hurtbox" unique_id=1985358085]
+position = Vector2(1247, 103)
+shape = SubResource("RectangleShape2D_fs6e8")
+debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Pièges/Pics/Node2D/Hurtbox" unique_id=725480272]
+position = Vector2(1696, 103)
+shape = SubResource("RectangleShape2D_fs6e8")
+debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+
 [node name="TrainingDummy" type="Node2D" parent="." unique_id=1339398798]
 position = Vector2(3112, 0)
 
@@ -437,3 +497,51 @@ metadata/_custom_type_script = "uid://bdqmp7c1drjtu"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TrainingDummy/Hurtbox" unique_id=1405511653]
 position = Vector2(0, -21)
 shape = SubResource("RectangleShape2D_4mrxx")
+
+[node name="Gives" type="Node" parent="." unique_id=711021275]
+
+[node name="Shift_Alt" type="TileMapLayer" parent="Gives" unique_id=1298792698]
+tile_map_data = PackedByteArray("AAAjAPr/AQAEAAAAAAA=")
+tile_set = SubResource("TileSet_en8nn")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Gives" unique_id=1105103485]
+tile_map_data = PackedByteArray("AAD///H/AQAAAAAAAAD6//b/AQABAAAAAAD///b/AQACAAAAAAAEAPb/AQADAAAAAADtAPj/AQAEAAAAAAD+APD/AQACAAAAAAAEAfD/AQAEAAAAAAA=")
+tile_set = SubResource("TileSet_0548b")
+
+[node name="Label" type="Label" parent="Gives" unique_id=832693155]
+offset_left = 95.0
+offset_top = -133.0
+offset_right = 146.0
+offset_bottom = -110.0
+text = ": Move"
+
+[node name="Label5" type="Label" parent="Gives" unique_id=1672770961]
+offset_left = 610.0
+offset_top = -107.0
+offset_right = 661.0
+offset_bottom = -84.0
+text = ": Dash"
+
+[node name="Label2" type="Label" parent="Gives" unique_id=2047395299]
+offset_left = 3165.0
+offset_top = -203.0
+offset_right = 3224.0
+offset_bottom = -154.0
+text = ": Vertical Attack
+"
+
+[node name="Label4" type="Label" parent="Gives" unique_id=1315713346]
+offset_left = 2888.0
+offset_top = -108.0
+offset_right = 3009.0
+offset_bottom = -59.0
+text = ": Attack
+"
+
+[node name="Label3" type="Label" parent="Gives" unique_id=1887788802]
+offset_left = 3092.0
+offset_top = -201.0
+offset_right = 3151.0
+offset_bottom = -152.0
+text = "+
+"

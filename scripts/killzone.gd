@@ -25,7 +25,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 	# Jouer provisoirement l'animation de mort
 	var sprite: AnimatedSprite2D = body.get_node("AnimatedSprite2D")
-	sprite.play("AttackDown")
+	sprite.play("Death")
 
 	# Démarrer le compte à rebours
 	timer.start()

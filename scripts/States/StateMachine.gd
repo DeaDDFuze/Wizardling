@@ -29,7 +29,8 @@ func _physics_process(delta: float) -> void:
 	current_state.physics_update(delta)
 
 	# Déplacement et collisions
-	player.move_and_slide()
+	if not player.movement_locked:
+		player.move_and_slide()
 
 	# Recharger le Dash aérien à l'atterrissage
 	if player.is_on_floor():

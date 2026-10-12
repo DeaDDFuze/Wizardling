@@ -13,6 +13,7 @@ const FALL_GRAVITY_MULTIPLIER = 1.5
 const JUMP_RELEASE_MULTIPLIER = 4.0
 const POGO_VELOCITY = -420.0
 
+var movement_locked: bool = false
 
 
 var facing_direction: int = 1

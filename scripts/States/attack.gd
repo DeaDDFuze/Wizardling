@@ -7,15 +7,27 @@ enum AttackDirection {
 	DOWN
 }
 
+
+
+
 var attack_direction: AttackDirection
 var attack_animation: StringName
+
+var attack_facing: int = 1
+
+const HITSTOP_DURATION: float = 0.5
+
+var hitstop_timer: float = 0.0
+var hitstop_active: bool = false
 
 
 @onready var horizontal_hitbox: Hitbox = player.get_node("Hitboxes/Horizontal")
 @onready var up_hitbox: Hitbox = player.get_node("Hitboxes/Up")
 @onready var down_hitbox: Hitbox = player.get_node("Hitboxes/Down")
+@onready var camera: Camera2D = player.get_node("Camera2D")
 
 var current_hitbox: Hitbox
+var shake_triggered: bool = false
 
 
 func select_hitbox() -> void:
@@ -30,14 +42,56 @@ func select_hitbox() -> void:
 			current_hitbox = down_hitbox
 
 
+func start_hitstop() -> void:
+	if hitstop_active:
+		return
+
+	hitstop_active = true
+	hitstop_timer = 0.1
+	player.movement_locked = true
+
+
+
+
+func update_hitstop(delta: float) -> void:
+	if not hitstop_active:
+		return
+
+	hitstop_timer -= delta
+
+	if hitstop_timer <= 0.0:
+		hitstop_active = false
+		player.movement_locked = false
+
+
+func trigger_attack_shake() -> void:
+	if shake_triggered:
+		return
+
+	shake_triggered = true
+
+	var direction := Vector2.ZERO
+
+	match attack_direction:
+		AttackDirection.HORIZONTAL:
+			direction = Vector2(attack_facing, 0)
+
+		AttackDirection.UP:
+			direction = Vector2.UP
+
+		AttackDirection.DOWN:
+			direction = Vector2.DOWN
+
+	camera.directional_shake(direction)
+
 func update_hitbox() -> void:
 	if current_hitbox == null:
 		return
 
-	# Frames 1, 2 et 3 = phase active du coup
 	if animated_sprite.frame >= 1 and animated_sprite.frame <= 3:
 		if not current_hitbox.active:
 			current_hitbox.activate()
+			trigger_attack_shake()
 	else:
 		current_hitbox.deactivate()
 
@@ -49,6 +103,13 @@ func disable_hitboxes() -> void:
 
 
 func enter() -> void:
+	
+	hitstop_active = false
+	hitstop_timer = 0.0
+	
+	shake_triggered = false
+	
+	attack_facing = player.facing_direction
 
 	# Déterminer la direction de l'attaque
 	if Input.is_action_pressed("up"):
@@ -87,19 +148,30 @@ func enter() -> void:
 	
 
 func physics_update(delta: float) -> void:
-	# Conserver la gravité et la trajectoire verticale
+	if hitstop_active:
+		update_hitstop(delta)
+		return
+
 	player.apply_gravity(delta)
 
-	# Lecture des commandes en temps réel
 	var direction := player.get_direction()
 
-	# Déplacement immédiat, sans inertie
 	player.velocity.x = direction * WizardlingPlayer.MOVE_SPEED
 
+	player.facing_direction = attack_facing
+	animated_sprite.flip_h = attack_facing < 0
+	horizontal_hitbox.position.x = 38.0 * attack_facing
 
 
+func on_attack_hit(target: Hurtbox) -> void:
+	start_hitstop()
 
 func exit() -> void:
+	
+	player.movement_locked = false
+	hitstop_active = false
+	hitstop_timer = 0.0
+	animated_sprite.play()
 	
 	disable_hitboxes()
 
@@ -126,6 +198,10 @@ func on_down_hit(_target: Hurtbox) -> void:
 	print("POGO JUMP !")
 
 func _ready() -> void:
+	horizontal_hitbox.target_hit.connect(on_attack_hit)
+	up_hitbox.target_hit.connect(on_attack_hit)
+	down_hitbox.target_hit.connect(on_attack_hit)
+
 	down_hitbox.target_hit.connect(on_down_hit)
 
 func on_animation_finished() -> void:
