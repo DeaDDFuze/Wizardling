@@ -433,11 +433,11 @@ offset = Vector2(600, -250)
 [node name="DamageZone" parent="Pièges" unique_id=1397862826 instance=ExtResource("11_e3hyu")]
 position = Vector2(865, 85)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=1984899126]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pièges/DamageZone/Hitbox" parent_id_path=PackedInt32Array(1397862826, 969830547) index="0" unique_id=1984899126]
 position = Vector2(190, 7)
 shape = SubResource("RectangleShape2D_0548b")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=771528441]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pièges/DamageZone/Hitbox" parent_id_path=PackedInt32Array(1397862826, 969830547) index="1" unique_id=771528441]
 position = Vector2(831, 5)
 shape = SubResource("RectangleShape2D_0548b")
 
@@ -506,3 +506,5 @@ offset_right = 3151.0
 offset_bottom = -152.0
 text = "+
 "
+
+[editable path="Pièges/DamageZone"]
