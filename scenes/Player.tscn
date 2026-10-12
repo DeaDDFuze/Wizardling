@@ -580,7 +580,7 @@ script = ExtResource("16_jfpux")
 [node name="Hurt" type="Node" parent="StateMachine" unique_id=1402174829]
 script = ExtResource("20_b8lor")
 
-[node name="Timer" type="Timer" parent="StateMachine/Hurt" unique_id=972638393]
+[node name="HurtTimer" type="Timer" parent="StateMachine/Hurt" unique_id=972638393]
 wait_time = 0.3
 one_shot = true
 
