@@ -34,6 +34,8 @@ var movement_locked: bool = false
 var facing_direction: int = 1
 var air_dash_available: bool = true
 
+var pending_knockback: Vector2 = Vector2.ZERO
+
 
 @onready var dash_cooldown: Timer = $DashCooldown
 
@@ -109,11 +111,18 @@ func _ready() -> void:
 	health_changed.emit(health, max_health)
 
 
-func on_hurtbox_hit() -> void:
-	take_damage(1)
+func on_hurtbox_hit(
+	damage: int,
+	knockback: Vector2
+) -> void:
+	take_damage(damage, knockback)
 
 
-func take_damage(amount: int) -> void:
+func take_damage(
+	amount: int,
+	knockback: Vector2 = Vector2.ZERO
+) -> void:
+
 	if is_dead or is_invulnerable:
 		return
 
@@ -129,8 +138,11 @@ func take_damage(amount: int) -> void:
 		die()
 		return
 
+	pending_knockback = knockback
+
 	is_invulnerable = true
 	invulnerability_timer.start()
+
 	state_machine.change_state("Hurt")
 
 

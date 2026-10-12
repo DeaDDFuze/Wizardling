@@ -358,8 +358,8 @@ sources/0 = SubResource("TileSetAtlasSource_4wyf3")
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_fs6e8"]
 distance = -485.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fs6e8"]
-size = Vector2(134, 28)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0548b"]
+size = Vector2(538, 34)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mrxx"]
 size = Vector2(34, 62)
@@ -431,55 +431,15 @@ offset = Vector2(600, -250)
 [node name="Pièges" type="Node" parent="." unique_id=1690057977]
 
 [node name="DamageZone" parent="Pièges" unique_id=1397862826 instance=ExtResource("11_e3hyu")]
+position = Vector2(865, 85)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=1512187574]
-position = Vector2(864, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=1984899126]
+position = Vector2(190, 7)
+shape = SubResource("RectangleShape2D_0548b")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=394087574]
-position = Vector2(1055, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=327433966]
-position = Vector2(1247, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=1786689452]
-position = Vector2(1696, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="Node2D" type="Node2D" parent="Pièges/DamageZone" unique_id=1378409680]
-position = Vector2(1, -13)
-
-[node name="Hurtbox" type="Area2D" parent="Pièges/DamageZone/Node2D" unique_id=169738908]
-collision_layer = 16
-collision_mask = 0
-script = ExtResource("6_qfnet")
-metadata/_custom_type_script = "uid://bdqmp7c1drjtu"
-
-[node name="CollisionShape2D5" type="CollisionShape2D" parent="Pièges/DamageZone/Node2D/Hurtbox" unique_id=79252570]
-position = Vector2(864, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="CollisionShape2D6" type="CollisionShape2D" parent="Pièges/DamageZone/Node2D/Hurtbox" unique_id=1073428615]
-position = Vector2(1055, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="CollisionShape2D7" type="CollisionShape2D" parent="Pièges/DamageZone/Node2D/Hurtbox" unique_id=1985358085]
-position = Vector2(1247, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
-
-[node name="CollisionShape2D8" type="CollisionShape2D" parent="Pièges/DamageZone/Node2D/Hurtbox" unique_id=725480272]
-position = Vector2(1696, 103)
-shape = SubResource("RectangleShape2D_fs6e8")
-debug_color = Color(0.99607843, 0, 0.19607843, 0.54901963)
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pièges/DamageZone" unique_id=771528441]
+position = Vector2(831, 5)
+shape = SubResource("RectangleShape2D_0548b")
 
 [node name="TrainingDummy" type="Node2D" parent="." unique_id=1339398798]
 position = Vector2(3112, 0)

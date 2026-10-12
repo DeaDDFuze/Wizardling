@@ -8,17 +8,27 @@ func _ready() -> void:
 	hurt_timer.timeout.connect(on_hurt_finished)
 
 
+
 func enter() -> void:
 	player.movement_locked = false
-	player.velocity.x = 0.0
+
+	# Recevoir la vitesse de projection
+	player.velocity = player.pending_knockback
+
+	# Vider le recul en attente
+	player.pending_knockback = Vector2.ZERO
 
 	animated_sprite.play("Hurt")
 	hurt_timer.start()
 
 
 func physics_update(delta: float) -> void:
+	# La gravité continue à agir.
 	player.apply_gravity(delta)
-	player.velocity.x = 0.0
+
+	# Ne pas modifier velocity.x ici :
+	# cela annulerait la projection.
+
 
 
 func exit() -> void:
