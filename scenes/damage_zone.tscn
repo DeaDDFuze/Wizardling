@@ -2,14 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b3abfdaqsgusx" path="res://scripts/Combat/DamageZone.gd" id="1_ppofr"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0k1nd"]
-size = Vector2(124, 35)
-
 [node name="DamageZone" type="Area2D" unique_id=1397862826]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_ppofr")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=958075358]
-position = Vector2(0, -7.5)
-shape = SubResource("RectangleShape2D_0k1nd")
