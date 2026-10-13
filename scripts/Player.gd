@@ -89,6 +89,13 @@ func apply_gravity(delta: float) -> void:
 		velocity.y += gravity * FALL_GRAVITY_MULTIPLIER * delta
 
 
+func can_dash() -> bool:
+	return (
+		dash_cooldown.is_stopped()
+		and (is_on_floor() or air_dash_available)
+	)
+
+
 
 # Oriente le personnage
 func update_facing() -> void:
