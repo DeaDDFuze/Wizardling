@@ -186,16 +186,22 @@ func exit() -> void:
 
 
 
+
 func on_down_hit(_target: Hurtbox) -> void:
 	if attack_direction != AttackDirection.DOWN:
 		return
 
-	# Le pogo ne s'applique que pendant la descente
 	if player.velocity.y < 0.0:
 		return
 
-	player.velocity.y = WizardlingPlayer.POGO_VELOCITY
-	print("POGO JUMP !")
+	# Impulsion identique au saut normal
+	player.velocity.y = WizardlingPlayer.JUMP_VELOCITY
+
+	# Ignore le relâchement d'Espace durant la montée
+	player.pogo_active = true
+
+	print("POGO BOUNCE MAX !")
+
 
 func _ready() -> void:
 	horizontal_hitbox.target_hit.connect(on_attack_hit)

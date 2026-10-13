@@ -29,6 +29,7 @@ const JUMP_RELEASE_MULTIPLIER = 4.0
 const POGO_VELOCITY = -420.0
 
 var movement_locked: bool = false
+var pogo_active: bool = false
 
 
 var facing_direction: int = 1
@@ -62,26 +63,30 @@ func apply_horizontal_movement() -> void:
 
 
 # Gestion de la gravité
+
 func apply_gravity(delta: float) -> void:
 	if is_on_floor():
+		pogo_active = false
 		return
 
 	var gravity := get_gravity().y
 
 	if velocity.y < 0.0:
-		if Input.is_action_pressed("jump"):
+		if pogo_active:
+			# Pogo : gravité normale, même sans Espace
 			velocity.y += gravity * GRAVITY_MULTIPLIER * delta
-		else:
-			velocity.y += gravity * JUMP_RELEASE_MULTIPLIER * delta
-	else:
-		velocity.y += gravity * FALL_GRAVITY_MULTIPLIER * delta
-		
 
-func can_dash() -> bool:
-	return (
-		dash_cooldown.is_stopped()
-		and (is_on_floor() or air_dash_available)
-	)
+		elif Input.is_action_pressed("jump"):
+			velocity.y += gravity * GRAVITY_MULTIPLIER * delta
+
+		else:
+			# Saut classique interrompu
+			velocity.y += gravity * JUMP_RELEASE_MULTIPLIER * delta
+
+	else:
+		# Fin de la montée : le Pogo est terminé
+		pogo_active = false
+		velocity.y += gravity * FALL_GRAVITY_MULTIPLIER * delta
 
 
 
