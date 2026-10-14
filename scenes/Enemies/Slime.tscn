@@ -312,8 +312,9 @@ radius = 11.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_0548b"]
 radius = 9.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_bqr44"]
-radius = 56.666668
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_oc5et"]
+radius = 22.0
+height = 62.666668
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aevqf"]
 radius = 150.0
@@ -321,14 +322,7 @@ radius = 150.0
 [node name="Slime" type="CharacterBody2D" unique_id=1987049243]
 scale = Vector2(1.5, 1.5)
 script = ExtResource("1_vu006")
-max_health = null
-move_speed = null
-chase_speed = null
-attack_range = null
-attack_cooldown = null
-hurt_duration = null
-explosion_start_frame = null
-explosion_end_frame = null
+max_health = 3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2830085]
 position = Vector2(0, -32)
@@ -358,7 +352,9 @@ knockback = Vector2(250, -300)
 radial_horizontal = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionHitbox" unique_id=1591047499]
-shape = SubResource("CircleShape2D_bqr44")
+position = Vector2(0, -18.666668)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_oc5et")
 debug_color = Color(0.7906243, 0.41243282, 0.32698512, 0.41960785)
 
 [node name="DetectionArea" type="Area2D" parent="." unique_id=1108246226]

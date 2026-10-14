@@ -1,6 +1,6 @@
 
 class_name Slime
-extends CharacterBody2D
+extends Enemy
 
 enum SlimeState {
 	IDLE,
@@ -11,44 +11,44 @@ enum SlimeState {
 }
 
 @export_group("Statistiques")
-@export_range(1, 20) var max_health: int = 1
 @export var move_speed: float = 60.0
 @export var chase_speed: float = 95.0
 @export var attack_range: float = 65.0
 
 @export_group("Combat")
 @export var attack_cooldown: float = 1.8
-@export var hurt_duration: float = 0.25
 
 # Numéros de frames, comptés à partir de 0.
 @export_group("Synchronisation Attack")
 @export var explosion_start_frame: int = 5
 @export var explosion_end_frame: int = 7
 
-var health: int
+
 var current_state: SlimeState = SlimeState.RUN
 var facing: int = 1
 
 var target: WizardlingPlayer = null
 var cooldown: float = 0.0
-var hurt_timer: float = 0.0
 
 var explosion_started: bool = false
 var explosion_finished: bool = false
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var hurtbox: Hurtbox = $Hurtbox
 @onready var explosion_hitbox: Hitbox = $ExplosionHitbox
 @onready var detection: Area2D = $DetectionArea
 @onready var ground_ray: RayCast2D = $GroundRay
 
 
+
+func has_super_armor() -> bool:
+	return current_state == SlimeState.ATTACK
+
+
 func _ready() -> void:
-	health = max_health
+	super._ready()
 
 	explosion_hitbox.deactivate()
 
-	hurtbox.hit_received.connect(take_damage)
 	detection.body_entered.connect(on_body_detected)
 	detection.body_exited.connect(on_body_lost)
 
@@ -58,36 +58,20 @@ func _ready() -> void:
 	change_state(SlimeState.RUN)
 
 
+
 func _physics_process(delta: float) -> void:
-	if current_state == SlimeState.DEATH:
+	super._physics_process(delta)
+
+	if is_dead:
 		return
-
-	cooldown = maxf(cooldown - delta, 0.0)
-
-	if current_state != SlimeState.HURT:
-		update_gravity(delta)
-
-	match current_state:
-		SlimeState.IDLE:
-			update_idle()
-
-		SlimeState.RUN:
-			update_run()
-
-		SlimeState.ATTACK:
-			velocity.x = 0.0
-
-		SlimeState.HURT:
-			update_hurt(delta)
-			update_gravity(delta)
-
-	move_and_slide()
 
 
 func update_gravity(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y += get_gravity().y * delta
 
+func on_hurt() -> void:
+	change_state(SlimeState.HURT)
 
 func change_state(new_state: SlimeState) -> void:
 	if current_state == SlimeState.DEATH:
@@ -101,6 +85,7 @@ func change_state(new_state: SlimeState) -> void:
 			velocity.x = 0.0
 
 		SlimeState.RUN:
+			knockback_active = false
 			sprite.play("Run")
 
 		SlimeState.ATTACK:
@@ -108,7 +93,6 @@ func change_state(new_state: SlimeState) -> void:
 
 		SlimeState.HURT:
 			sprite.play("Hurt")
-			hurt_timer = hurt_duration
 			explosion_hitbox.deactivate()
 
 		SlimeState.DEATH:
@@ -122,38 +106,46 @@ func update_idle() -> void:
 		change_state(SlimeState.RUN)
 
 
+
 func update_run() -> void:
-	# Détecteur de bord devant le Slime
-	ground_ray.position.x = 20.0 * facing
-	ground_ray.force_raycast_update()
+	var desired_direction: int = facing
+	var speed: float = move_speed
 
-	if is_on_floor() and not ground_ray.is_colliding():
-		facing *= -1
-
-	if is_on_wall():
-		facing *= -1
-
-	var speed := move_speed
-
+	# 1. Choisir la direction souhaitée
 	if is_instance_valid(target) and not target.is_dead:
-		var distance := target.global_position.x - global_position.x
+		var distance_x: float = (
+			target.global_position.x - global_position.x
+		)
 
-		if absf(distance) <= attack_range and cooldown <= 0.0:
+		if absf(distance_x) <= attack_range \
+		and cooldown <= 0.0:
 			change_state(SlimeState.ATTACK)
 			return
 
-		# Poursuivre seulement si le sol continue.
-		var target_facing := 1 if distance >= 0.0 else -1
+		desired_direction = 1 if distance_x >= 0.0 else -1
+		speed = chase_speed
 
-		ground_ray.position.x = 20.0 * target_facing
-		ground_ray.force_raycast_update()
+	# 2. Vérifier le sol dans la direction souhaitée
+	ground_ray.position.x = 20.0 * desired_direction
+	ground_ray.force_raycast_update()
 
-		if not is_on_floor() or ground_ray.is_colliding():
-			facing = target_facing
-			speed = chase_speed
+	# 3. Si cette direction mène dans le vide,
+	# ne pas poursuivre le joueur.
+	if is_on_floor() and not ground_ray.is_colliding():
+		velocity.x = 0.0
+		sprite.play("Idle")
+		return
 
+	# 4. Vérifier les murs
+	if is_on_wall() and desired_direction == facing:
+		desired_direction *= -1
+
+	# 5. Appliquer la direction autorisée
+	facing = desired_direction
 	velocity.x = facing * speed
+
 	sprite.flip_h = facing < 0
+	sprite.play("Run")
 
 
 func start_attack() -> void:
@@ -200,56 +192,21 @@ func on_animation_finished() -> void:
 
 
 func update_hurt(delta: float) -> void:
-	velocity.x = move_toward(
-		velocity.x,
-		0.0,
-		500.0 * delta
-	)
-
-
-func take_damage(
-	damage: int,
-	knockback: Vector2
-) -> void:
-	if current_state == SlimeState.DEATH:
-		return
-
-	health = maxi(health - damage, 0)
-
-	print("SLIME : ", health, "/", max_health, " PV")
-
-	if health <= 0:
-		die()
-		return
-
-	velocity = knockback
-	change_state(SlimeState.HURT)
+	update_knockback(delta)
 
 
 
-func die() -> void:
-	if current_state == SlimeState.DEATH:
-		return
-
+func on_death() -> void:
 	current_state = SlimeState.DEATH
-	velocity = Vector2.ZERO
 
-	# Désactiver les dégâts
 	explosion_hitbox.deactivate()
-
-	# Désactiver la collision physique avec le joueur
-	$CollisionShape2D.set_deferred("disabled", true)
-
-	# Désactiver les zones de combat
-	$ExplosionHitbox/CollisionShape2D.set_deferred("disabled", true)
-	$Hurtbox/CollisionShape2D.set_deferred("disabled", true)
-
-	# Arrêter la détection
 	detection.set_deferred("monitoring", false)
 
-	# Jouer l'animation de mort
 	sprite.play("Death")
 	print("SLIME : mort")
+
+
+
 
 
 
