@@ -59,11 +59,40 @@ func _ready() -> void:
 
 
 
+
 func _physics_process(delta: float) -> void:
+	# Santé et invulnérabilité héritées de Enemy
 	super._physics_process(delta)
 
 	if is_dead:
 		return
+
+	# Gestion du délai entre les attaques
+	cooldown = maxf(cooldown - delta, 0.0)
+
+	# La gravité s'applique à tous les états vivants
+	update_gravity(delta)
+
+	# Intelligence artificielle du Slime
+	match current_state:
+		SlimeState.IDLE:
+			update_idle()
+
+		SlimeState.RUN:
+			update_run()
+
+		SlimeState.ATTACK:
+			velocity.x = 0.0
+
+		SlimeState.HURT:
+			update_hurt(delta)
+
+		SlimeState.DEATH:
+			return
+
+	# Appliquer la vitesse et les collisions physiques
+	move_and_slide()
+
 
 
 func update_gravity(delta: float) -> void:

@@ -112,6 +112,25 @@ func die() -> void:
 
 	# Empêcher les coups sur un ennemi mort
 	hurtbox.set_deferred("monitorable", false)
+	
+	
+	# Désactiver la zone de réception des coups
+	var hurt_collision := hurtbox.get_node_or_null(
+        "CollisionShape2D"
+	) as CollisionShape2D
+
+	if hurt_collision:
+		hurt_collision.set_deferred("disabled", true)
+
+	# Désactiver les zones offensives et leurs collisions
+	for child in get_children():
+		if child is Hitbox:
+			child.deactivate()
+
+			for hitbox_child in child.get_children():
+				if hitbox_child is CollisionShape2D:
+					hitbox_child.set_deferred("disabled", true)
+
 
 	for child in get_children():
 		if child is Hitbox:
