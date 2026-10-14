@@ -2,7 +2,7 @@
 class_name Slime
 extends CharacterBody2D
 
-enum State {
+enum SlimeState {
 	IDLE,
 	RUN,
 	ATTACK,
@@ -26,7 +26,7 @@ enum State {
 @export var explosion_end_frame: int = 7
 
 var health: int
-var current_state: State = State.RUN
+var current_state: SlimeState = SlimeState.RUN
 var facing: int = 1
 
 var target: WizardlingPlayer = null
@@ -55,30 +55,31 @@ func _ready() -> void:
 	sprite.frame_changed.connect(on_frame_changed)
 	sprite.animation_finished.connect(on_animation_finished)
 
-	change_state(State.RUN)
+	change_state(SlimeState.RUN)
 
 
 func _physics_process(delta: float) -> void:
-	if current_state == State.DEATH:
+	if current_state == SlimeState.DEATH:
 		return
 
 	cooldown = maxf(cooldown - delta, 0.0)
 
-	if current_state != State.HURT:
+	if current_state != SlimeState.HURT:
 		update_gravity(delta)
 
 	match current_state:
-		State.IDLE:
+		SlimeState.IDLE:
 			update_idle()
 
-		State.RUN:
+		SlimeState.RUN:
 			update_run()
 
-		State.ATTACK:
+		SlimeState.ATTACK:
 			velocity.x = 0.0
 
-		State.HURT:
+		SlimeState.HURT:
 			update_hurt(delta)
+			update_gravity(delta)
 
 	move_and_slide()
 
@@ -88,29 +89,29 @@ func update_gravity(delta: float) -> void:
 		velocity.y += get_gravity().y * delta
 
 
-func change_state(new_state: State) -> void:
-	if current_state == State.DEATH:
+func change_state(new_state: SlimeState) -> void:
+	if current_state == SlimeState.DEATH:
 		return
 
 	current_state = new_state
 
 	match current_state:
-		State.IDLE:
+		SlimeState.IDLE:
 			sprite.play("Idle")
 			velocity.x = 0.0
 
-		State.RUN:
+		SlimeState.RUN:
 			sprite.play("Run")
 
-		State.ATTACK:
+		SlimeState.ATTACK:
 			start_attack()
 
-		State.HURT:
+		SlimeState.HURT:
 			sprite.play("Hurt")
 			hurt_timer = hurt_duration
 			explosion_hitbox.deactivate()
 
-		State.DEATH:
+		SlimeState.DEATH:
 			pass
 
 
@@ -118,7 +119,7 @@ func update_idle() -> void:
 	velocity.x = 0.0
 
 	if target != null:
-		change_state(State.RUN)
+		change_state(SlimeState.RUN)
 
 
 func update_run() -> void:
@@ -138,7 +139,7 @@ func update_run() -> void:
 		var distance := target.global_position.x - global_position.x
 
 		if absf(distance) <= attack_range and cooldown <= 0.0:
-			change_state(State.ATTACK)
+			change_state(SlimeState.ATTACK)
 			return
 
 		# Poursuivre seulement si le sol continue.
@@ -169,7 +170,7 @@ func start_attack() -> void:
 
 
 func on_frame_changed() -> void:
-	if current_state != State.ATTACK:
+	if current_state != SlimeState.ATTACK:
 		return
 
 	var frame := sprite.frame
@@ -185,38 +186,32 @@ func on_frame_changed() -> void:
 
 
 func on_animation_finished() -> void:
-	if current_state == State.DEATH:
+	if current_state == SlimeState.DEATH:
 		queue_free()
 		return
 
-	if current_state == State.ATTACK:
+	if current_state == SlimeState.ATTACK:
 		explosion_hitbox.deactivate()
-		change_state(State.RUN)
+		change_state(SlimeState.RUN)
 		return
 
-	if current_state == State.HURT:
-		change_state(State.RUN)
+	if current_state == SlimeState.HURT:
+		change_state(SlimeState.RUN)
 
 
 func update_hurt(delta: float) -> void:
-	hurt_timer -= delta
-
-	# Décélération progressive du recul
 	velocity.x = move_toward(
 		velocity.x,
 		0.0,
 		500.0 * delta
 	)
 
-	if hurt_timer <= 0.0:
-		change_state(State.RUN)
-
 
 func take_damage(
 	damage: int,
 	knockback: Vector2
 ) -> void:
-	if current_state == State.DEATH:
+	if current_state == SlimeState.DEATH:
 		return
 
 	health = maxi(health - damage, 0)
@@ -228,20 +223,34 @@ func take_damage(
 		return
 
 	velocity = knockback
-	change_state(State.HURT)
+	change_state(SlimeState.HURT)
+
 
 
 func die() -> void:
-	current_state = State.DEATH
+	if current_state == SlimeState.DEATH:
+		return
 
+	current_state = SlimeState.DEATH
 	velocity = Vector2.ZERO
+
+	# Désactiver les dégâts
 	explosion_hitbox.deactivate()
 
-	# Empêcher de nouveaux coups sur le Slime mort
-	hurtbox.set_deferred("monitorable", false)
+	# Désactiver la collision physique avec le joueur
+	$CollisionShape2D.set_deferred("disabled", true)
 
+	# Désactiver les zones de combat
+	$ExplosionHitbox/CollisionShape2D.set_deferred("disabled", true)
+	$Hurtbox/CollisionShape2D.set_deferred("disabled", true)
+
+	# Arrêter la détection
+	detection.set_deferred("monitoring", false)
+
+	# Jouer l'animation de mort
 	sprite.play("Death")
 	print("SLIME : mort")
+
 
 
 func on_body_detected(body: Node2D) -> void:

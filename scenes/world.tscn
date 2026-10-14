@@ -526,4 +526,19 @@ text = "+
 [node name="Slime" parent="Enemies" unique_id=1987049243 instance=ExtResource("12_q5onr")]
 position = Vector2(417, -1)
 
+[node name="Slime2" parent="Enemies" unique_id=1030740753 instance=ExtResource("12_q5onr")]
+position = Vector2(1415, -1)
+
+[node name="Slime3" parent="Enemies" unique_id=1948020297 instance=ExtResource("12_q5onr")]
+position = Vector2(2133, 1)
+
+[node name="Slime4" parent="Enemies" unique_id=164975650 instance=ExtResource("12_q5onr")]
+position = Vector2(1858, 3)
+
+[node name="Slime5" parent="Enemies" unique_id=679420311 instance=ExtResource("12_q5onr")]
+position = Vector2(2222, -189)
+
+[node name="Slime6" parent="Enemies" unique_id=1331494004 instance=ExtResource("12_q5onr")]
+position = Vector2(2840, -2)
+
 [editable path="Pièges/DamageZone"]
