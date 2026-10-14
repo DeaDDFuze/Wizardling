@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bndxvuldqnckm" path="res://assets/Keys.png" id="8_4mrxx"]
 [ext_resource type="Texture2D" uid="uid://m8ksrb1743fc" path="res://assets/Keys_shift.png" id="8_7r4gi"]
 [ext_resource type="PackedScene" uid="uid://cjv1rbkobb87b" path="res://scenes/damage_zone.tscn" id="11_e3hyu"]
+[ext_resource type="PackedScene" uid="uid://chm3m7mytr7s1" path="res://scenes/Enemies/Slime.tscn" id="12_q5onr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4wyf3"]
 texture = ExtResource("2_rwgxs")
@@ -392,7 +393,6 @@ sources/1 = SubResource("TileSetAtlasSource_7r4gi")
 [node name="World" type="Node2D" unique_id=852045070]
 
 [node name="Player" parent="." unique_id=855193938 instance=ExtResource("1_nnsk1")]
-max_health = null
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1981982555]
 position = Vector2(0, -56)
@@ -520,5 +520,10 @@ offset_right = 3151.0
 offset_bottom = -152.0
 text = "+
 "
+
+[node name="Enemies" type="Node" parent="." unique_id=1847863878]
+
+[node name="Slime" parent="Enemies" unique_id=1987049243 instance=ExtResource("12_q5onr")]
+position = Vector2(417, -1)
 
 [editable path="Pièges/DamageZone"]
