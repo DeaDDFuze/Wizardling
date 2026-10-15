@@ -29,20 +29,27 @@ func deactivate() -> void:
 	active = false
 
 
+
 func calculate_knockback(target: Hurtbox) -> Vector2:
 	var result := knockback
 
 	if radial_horizontal:
-		var direction := signf(
-			target.global_position.x - global_position.x
-		)
+		# Position du personnage qui frappe
+		var attacker := owner as Node2D
 
-		if is_zero_approx(direction):
-			direction = 1.0
+		if attacker != null:
+			var direction := signf(
+				target.owner.global_position.x
+				- attacker.global_position.x
+			)
 
-		result.x = absf(knockback.x) * direction
+			if is_zero_approx(direction):
+				direction = 1.0
+
+			result.x = absf(knockback.x) * direction
 
 	return result
+
 
 
 func _physics_process(_delta: float) -> void:
